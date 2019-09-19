@@ -86,7 +86,7 @@ class page_base {
 
 				break;
 			}
-				
+
 		}
 	}
 	/******************************Gestion des styles **********************************************/
@@ -112,12 +112,12 @@ class page_base {
 			echo utf8_encode($s).',';
 		}
 		echo '" />';
-	}	
-	/****************************** Affichage de la partie entÃªte ***************************************/	
+	}
+	/****************************** Affichage de la partie entÃªte ***************************************/
 	protected function affiche_entete() {
 		echo'
            <header>
-				
+
 				<img  class="img-responsive"  width="292" height="136" src="'.$this->path.'/image/logo.jpg" alt="logo" style="float:left;padding: 0 10px 10px 0;"/>
 				<h1>
 					Sites de france
@@ -128,23 +128,25 @@ class page_base {
              </header>
 		';
 	}
-	/****************************** Affichage du menu ***************************************/	
-	
+	/****************************** Affichage du menu ***************************************/
+
 	protected function affiche_menu() {
 		echo '
 				<ul >
-					<li ><a   href="'.$this->path.'/Accueil" >Accueil </a></li>
+					<li ><a   href="'.$this->path.'/Accueil" > Accueil </a></li>
+					<li ><a   href="'.$this->path.'/Departement" > Departement </a></li>
+					<li ><a   href="'.$this->path.'/Ville" > Ville </a></li>
 				</ul>';
 	}
 	protected function affiche_menu_connexion() {
-		
+
 		if(!(isset($_SESSION['id']) && isset($_SESSION['type'])))
-		{	
+		{
 			echo '
 					<ul >
 						<li><a  href="'.$this->path.'/Connexion">Connexion</a></li>
 					</ul>';
-		} 
+		}
 		else
 		{
 			echo '
@@ -160,12 +162,12 @@ class page_base {
 				<div >
 
 				';
-						
+
 	}
 	public function affiche_footer_menu(){
 		echo '
-						
-					
+
+
 				</div>
 			</nav>
 		</div>';
@@ -176,20 +178,20 @@ class page_base {
 	public function rempli_right_sidebar() {
 		return'
 
-			
+
 				<article>
 					<h3>Association de la valorisation des sites touristiques de FRANCE</h3>
 										<p>12 rue des gones</br>
 										44000 NANTES</br>
 										Tel : 02.40.27.11.71</br>
 										Mail : avst44@gmai.com</p>
-										
+
 											<a  href="Contact" class="button">Contact</a>
                 </article>
 				';
-							
+
 	}
-	
+
 	/****************************************** Affichage du pied de la page ***************************/
 	private function affiche_footer() {
 		echo '
@@ -198,18 +200,18 @@ class page_base {
 				<p>Site de travail Lycée CARCOUET 2019-2020 - servant de base à  l\'apprentissage PHP objet - jquery - Ajax  - Bootstrap</p>
 				<p id="copyright">
 				Mise en page PFR &copy; 2019
-				<a href="http://www.btssio-carcouet.fr/">BTS SIO Lycée CARCOUET NANTES</a> 
+				<a href="http://www.btssio-carcouet.fr/">BTS SIO Lycée CARCOUET NANTES</a>
 				</p>
             </footer>
 		';
 	}
 
-	
+
 	/********************************************* Fonction permettant l'affichage de la page ****************/
 
 	public function affiche() {
-		
-		
+
+
 		?>
 			<!DOCCTYPE html>
 			<html lang='fr'>
@@ -217,7 +219,7 @@ class page_base {
 					<title><?php echo $this->titre; ?></title>
 					<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 					<meta name="description" content="<?php echo $this->metadescription; ?>" />
-					
+
 					<?php $this->affiche_keyword(); ?>
 					<?php $this->affiche_javascript(); ?>
 					<?php $this->affiche_style(); ?>
@@ -230,7 +232,7 @@ class page_base {
 						<?php $this->affiche_menu(); ?>
 						<?php $this->affiche_menu_connexion(); ?>
 						<?php $this->affiche_footer_menu(); ?>
-												                      
+
   						<div style="clear:both;">
     						<div style="float:left;width:75%;">
      							<?php echo $this->left_sidebar; ?>

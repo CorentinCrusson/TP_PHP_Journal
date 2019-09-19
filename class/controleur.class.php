@@ -16,7 +16,7 @@ class controleur {
 				}
 			case 'db' :
 				{
-					
+
 					return $this->db;
 					break;
 				}
@@ -24,17 +24,17 @@ class controleur {
 	}
 	public function retourne_article($title)
 	{
-		
+
 		$retour='<section>';
 		$result = $this->vpdo->liste_article($title);
 		if ($result != false) {
 			while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
 			// parcourir chaque ligne sélectionnée
 			{
-		
+
 				$retour = $retour . '<div class="card text-white bg-dark m-2" ><div class="card-body">
 				<article>
-					<h3 class="card-title">'.$row->h3.'</h3>                    
+					<h3 class="card-title">'.$row->h3.'</h3>
 					<p class="card-text">'.$row->corps.'</p>
                     <p class="card-text"><i>'.'Ecrit par '.$row->intitule.' '.$row->nom.' '.$row->prenom.'    , le '.$row->date_redaction.'</i></p>
 				</article>
@@ -44,7 +44,7 @@ class controleur {
 		return $retour;
 		}
 	}
-	
+
 	public function retourne_carrousel()
 	{
 	    $retour='';
@@ -82,43 +82,72 @@ class controleur {
 	    $retour = '';
 	    $retour = $retour.'<div class="table-responsive">
 	    <table id="deparTable" class="table table-striped table-bordered" cellspacing="0" >
-            <thead>
+            <thead style="color:#DC143C">
             	<tr>
-            		<th>Code d�partement</th>
-            		<th>D�partement</th>
-            		<th>R�gion</th>
-            	</tr>
-            </thead>
+            		<th>Code departement</th>
+            		<th>Departement</th>
+            		<th>Region</th>
+            	</tr>  </thead> <tbody style="color:#FFEBCD">';
+		 $result = $this->vpdo->liste_dep();
+		 if ($result != false) {
+			 while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
+					{
+							$retour = $retour.'<tr>
+							<th>'.$row->departement_code.'</th>
+							<th>'.$row->departement_nom.'</th>
+							<th>'.$row->libel.'</th>
+							</tr>';
+					}
+
+			$retour = $retour.'</body>
          </table>
         </div>';
 
-        return $retour;	    
+        return $retour;
+			}
 	}
-	
+
+	public function affiche_combo_departement (){
+
+		$liste = "<SELECT name = 'idPoste'>";
+
+		//Si on veut modifier un salarie, on rajoute l'option 'vide'
+		if ($vue == 'salarie')
+			$liste = $liste."<option value=''> </OPTION>";
+
+		foreach ($this->lesPostes as $unPoste)
+			{
+			$liste = $liste."<OPTION value='".$unPoste->getId()."'>".$unPoste->getLibelle()."</OPTION>";
+			}
+		$liste = $liste."</SELECT>";
+		return $liste;
+
+	}
+
 	public function genererMDP ($longueur = 8){
 		// initialiser la variable $mdp
 		$mdp = "";
-	
+
 		// Définir tout les caractères possibles dans le mot de passe,
 		// Il est possible de rajouter des voyelles ou bien des caractères spéciaux
 		$possible = "2346789bcdfghjkmnpqrtvwxyzBCDFGHJKLMNPQRTVWXYZ&#@$*!";
-	
+
 		// obtenir le nombre de caractères dans la chaîne précédente
 		// cette valeur sera utilisé plus tard
 		$longueurMax = strlen($possible);
-	
+
 		if ($longueur > $longueurMax) {
 			$longueur = $longueurMax;
 		}
-	
+
 		// initialiser le compteur
 		$i = 0;
-	
+
 		// ajouter un caractère aléatoire à $mdp jusqu'à ce que $longueur soit atteint
 		while ($i < $longueur) {
 			// prendre un caractère aléatoire
 			$caractere = substr($possible, mt_rand(0, $longueurMax-1), 1);
-	
+
 			// vérifier si le caractère est déjà utilisé dans $mdp
 			if (!strstr($mdp, $caractere)) {
 				// Si non, ajouter le caractère à $mdp et augmenter le compteur
@@ -126,12 +155,12 @@ class controleur {
 				$i++;
 			}
 		}
-	
+
 		// retourner le résultat final
 		return $mdp;
 	}
-	
-	
+
+
 }
 
 ?>
