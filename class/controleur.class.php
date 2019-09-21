@@ -107,20 +107,40 @@ class controleur {
 			}
 	}
 
-	public function affiche_combo_departement (){
+	public function affiche_combo_departement(){
 
-		$liste = "<SELECT name = 'idPoste'>";
+		$retour = '<divclass="left_sidebar">
+		<SELECT id="liste_dep onChange="js_change_dep()" >';
 
-		//Si on veut modifier un salarie, on rajoute l'option 'vide'
-		if ($vue == 'salarie')
-			$liste = $liste."<option value=''> </OPTION>";
+		//Combo Box Departement
+		$result = $this->vpdo->liste_dep();
+		if ($result != false) {
+			while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
+				 {
+						 $retour = $retour."<option value='$row->departement_code'>$row->departement_nom</OPTION>";
+				}
 
-		foreach ($this->lesPostes as $unPoste)
-			{
-			$liste = $liste."<OPTION value='".$unPoste->getId()."'>".$unPoste->getLibelle()."</OPTION>";
+		$retour = $retour.'</SELECT></div>';
+		return $retour;
+		}
+	}
+
+		public function affiche_combo_ville(){
+
+			$retour = '<divclass="left_sidebar">
+			<SELECT id="liste_ville" style="display:none">';
+
+			//Combo Box Departement
+			$result = $this->vpdo->trouve_toutes_les_ville_via_un_departement($id);
+			if ($result != false) {
+				while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
+					 {
+							 $retour = $retour."<option value='$row->ville_id'>$row->ville_nom</OPTION>";
+					}
+
+			$retour = $retour.'</SELECT></div>';
+			return $retour;
 			}
-		$liste = $liste."</SELECT>";
-		return $liste;
 
 	}
 

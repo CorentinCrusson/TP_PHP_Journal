@@ -48,7 +48,9 @@
 		case 'ville' :
 				$site->titre='Ville';
 				$site->js='ville';
-				$site-> right_sidebar=$site->rempli_right_sidebar();
+				$site->right_sidebar=$site->rempli_right_sidebar();
+				$site->left_sidebar=$controleur->affiche_combo_departement();
+				$site->left_sidebar=$controleur->affiche_combo_ville(js_change_dep());
 				$site->affiche();
 				break;
 

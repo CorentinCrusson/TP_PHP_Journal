@@ -8,7 +8,7 @@ class mypdo extends PDO{
     private $connexion;
     public function __construct() {
     	try {
-    		
+
     		$this->connexion = new PDO('mysql:host='.$this->PARAM_hote.';dbname='.$this->PARAM_nom_bd, $this->PARAM_utilisateur, $this->PARAM_mot_passe,array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
     		//echo '<script>alert ("ok connex");</script>)';echo $this->PARAM_nom_bd;
     	}
@@ -30,35 +30,50 @@ class mypdo extends PDO{
     			}
     	}
     }
-    
+
     public function liste_article($title)
     {
-    
+
 		$requete='select g.intitule,s.nom,s.prenom, a.date_redaction,a.h3,a.corps from article a,page p, grade g, salarie s where a.page=p.id and p.title="'.$title.'" AND a.salarie = s.id AND s.grade = g.id AND publie = 1 AND NOW() BETWEEN date_deb AND date_fin ORDER BY num_ordre ASC;';
 
     	$result=$this->connexion ->query($requete);
     	if ($result)
-    
+
     	{
-  		
+
     			return ($result);
    		}
     	return null;
     }
     public function liste_dep()
     {
-    
+
     	$requete='SELECT departement_code,departement_nom,libel FROM departement,region,departement_region WHERE departement_code= code_dep and code_reg=code order by departement_code;';
-    
+
     	$result=$this->connexion ->query($requete);
     	if ($result)
-    
+
     	{
-    
+
     		return ($result);
     	}
     	return null;
     }
-    
+
+    public function trouve_toutes_les_ville_via_un_departement($id){
+
+      $requete = "SELECT ville_id, ville_nom FROM villes_france_free, departement WHERE departement_code = '?' order by ville_id";
+      $requete->bindValue(1,$id);
+
+      $result=$this->connexion ->query($requete);
+    	if ($result)
+
+    	{
+
+    		return ($result);
+    	}
+    	return null;
+    }
+
 }
 ?>
