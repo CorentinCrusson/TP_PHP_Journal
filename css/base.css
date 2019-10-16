@@ -1,31 +1,31 @@
 
 
-/* --- STYLES DE BASE POUR LE TEXTE ET LES PRINCIPAUX ÉLÉMENTS --- */
+/* --- STYLES DE BASE POUR LE TEXTE ET LES PRINCIPAUX ï¿½Lï¿½MENTS --- */
 
 /* Page */
 html {
-	font-size: 100%; 
+	font-size: 100%;
 }
 body {
 	margin: 0;
-	padding: 10px 20px; 
+	padding: 10px 20px;
 	font-family: Verdana, "Bitstream Vera Sans", "Lucida Grande", sans-serif; /* 3 */
 	font-size: .8em;
-	line-height: 1.25; 
+	line-height: 1.25;
 	color: black;
 	background: white;
 }
 
 /* Titres */
 h1, h2, h3, h4, h5, h6 {
-	margin: 1em 0 .5em 0; 
+	margin: 1em 0 .5em 0;
 }
 h1, h2 {
 	font-family: Georgia, "Bitstream Vera Serif", Norasi, serif;
-	font-weight: normal; 
+	font-weight: normal;
 }
 h1 {
-	font-size: 3em; 
+	font-size: 3em;
 	font-style: italic;
 }
 h2 {font-size: 1.8em;}
@@ -35,8 +35,9 @@ h4 {font-size: 1em;}
 /* Listes */
 ul, ol {
 	margin: .75em 0 .75em 24px;
-	padding: 0; 
+	padding: 0;
 }
+
 
 li {
 	margin: .75em 0;
@@ -73,16 +74,16 @@ a:hover, a:focus {
 	color: crimson;
 }
 a img {
-	border: none; 
+	border: none;
 }
 
-/* Divers éléments de type en-ligne */
+/* Divers ï¿½lï¿½ments de type en-ligne */
 em {
 	font-style: italic;
 }
 strong {
 	font-weight: bold;
-	color: dimgray;
+	color: white;
 }
 
 
@@ -119,3 +120,7 @@ pre strong {
 	text-decoration: underline;
 }
 
+.map {
+        				height: 400px;
+        				width: 100%;
+      			}
