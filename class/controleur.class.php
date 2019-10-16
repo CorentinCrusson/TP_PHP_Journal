@@ -93,13 +93,13 @@ class controleur {
 			 while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
 					{
 							$retour = $retour.'<tr>
-							<th>'.$row->departement_code.'</th>
-							<th>'.$row->departement_nom.'</th>
-							<th>'.$row->libel.'</th>
+							<td>'.$row->departement_code.'</td>
+							<td>'.$row->departement_nom.'</td>
+							<td>'.$row->libel.'</td>
 							</tr>';
 					}
 
-			$retour = $retour.'</body>
+			$retour = $retour.'</tbody>
          </table>
         </div>';
 
@@ -109,8 +109,8 @@ class controleur {
 
 	public function affiche_combo_departement(){
 
-		$retour = '<divclass="left_sidebar">
-		<SELECT id="liste_dep onChange="js_change_dep()" >';
+		$retour = '<div class="left_sidebar">
+		<SELECT id="liste_dep" onChange="js_change_dep()" >';
 
 		//Combo Box Departement
 		$result = $this->vpdo->liste_dep();
@@ -127,22 +127,175 @@ class controleur {
 
 		public function affiche_combo_ville(){
 
-			$retour = '<divclass="left_sidebar">
-			<SELECT id="liste_ville" style="display:none">';
+			$retour = '<div class="left_sidebar">
+			<SELECT id="liste_ville" style="visibility: hidden" onChange="js_change_ville()">';
 
 			//Combo Box Departement
-			$result = $this->vpdo->trouve_toutes_les_ville_via_un_departement($id);
-			if ($result != false) {
-				while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
-					 {
-							 $retour = $retour."<option value='$row->ville_id'>$row->ville_nom</OPTION>";
-					}
-
-			$retour = $retour.'</SELECT></div>';
+			$retour = $retour.'</SELECT> </div>';
 			return $retour;
-			}
 
 	}
+
+	public function affiche_infos_ville(){
+
+		$retour = '<div class="left_sidebar">
+		<div id="infos_ville" style="visibility: hidden">
+
+		<label> Département : </label>
+		<input id="iddep" />
+
+		<label> Code Postal : </label>
+		<input id="ville_cp" />
+
+		<label> Ville : </label>
+		<input id="ville_nom" />
+
+		<label> Latitude : </label>
+		<input id="ville_lat" />
+
+		<label> Longitude : </label>
+		<input id="ville_long" />
+
+		';
+		$retour = $retour . '
+		 <div id="map" class="map" style="visibility: hidden;">
+		 </div>
+		';
+
+		$retour = $retour.'</div>';
+
+
+		return $retour;
+
+}
+
+public function retourne_formulaire_login() {
+	$retour = '
+			<div class="modal fade" id="myModal" role="dialog" style="color:#000;">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+	        				<h4 class="modal-title"><span class="fas fa-lock"></span> Formulaire de connexion</h4>
+	        				<button type="button" class="close" data-dismiss="modal" aria-label="Close" ">
+	          					<span aria-hidden="true">&times;</span>
+	        				</button>
+	      				</div>
+						<div class="modal-body">
+							<form role="form" id="login" method="post">
+								<div class="form-group">
+									<label for="id"><span class="fas fa-user"></span> Identifiant</label>
+									<input type="text" class="form-control" id="id" name="id" placeholder="Identifiant">
+								</div>
+								<div class="form-group">
+									<label for="mp"><span class="fas fa-eye"></span> Mot de passe</label>
+									<input type="password" class="form-control" id="mp" name="mp" placeholder="Mot de passe">
+								</div>
+								<div class="form-group">
+									<label class="radio-inline"><input type="radio" name="rblogin" id="rbj" value="rbj">Journaliste</label>
+									<label class="radio-inline"><input type="radio" name="rblogin" id="rbr" value="rbr">Rédacteur en chef</label>
+									<label class="radio-inline"><input type="radio" name="rblogin" id="rba" value="rba">Administrateur</label>
+								</div>
+								<button type="submit" class="btn btn-success btn-block" class="submit"><span class="fas fa-power-off"></span> Login</button>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button"  class="btn btn-danger btn-default pull-left" data-dismiss="modal" ><span class="fas fa-times"></span> Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>';
+
+			return $retour;
+}
+
+public function retourne_modal_message()
+	{
+		$retour='
+		<div class="modal fade" id="ModalRetour" role="dialog" style="color:#000;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<div class="modal-header">
+        				<h4 class="modal-title"><span class="fas fa-info-circle"></span> INFORMATIONS</h4>
+        				<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hd();">
+          					<span aria-hidden="true">&times;</span>
+        				</button>
+      				</div>
+		       		<div class="modal-body">
+						<div class="alert alert-info">
+							<p></p>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" onclick="hdModalRetour();">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		';
+		return $retour;
+	}
+
+	public function retourne_article_journaliste()  {
+		$retour = '';
+		$retour = $retour.'<div class="table-responsive">
+		<table id="artJournaTable" class="table table-striped table-bordered" cellspacing="0" >
+					<thead style="color:#DC143C">
+						<tr>
+							<th>Titre Article</th>
+							<th>Page</th>
+							<th>Date Deb</th>
+							<th>Date Fin</th>
+							<th> </th>
+						</tr>  </thead> <tbody style="color:#FFEBCD">';
+	 $result = $this->vpdo->liste_art_journaliste('DM');
+	 if ($result != false) {
+		 while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
+				{
+						$retour = $retour.'<tr>
+						<th>'.$row->h3.'</th>
+						<th>'.$row->title.'</th>
+						<th>'.$row->date_deb.'</th>
+						<th>'.$row->date_fin.'</th>
+						<th><a href=""> Modifier </a></th>
+						</tr>';
+				}
+
+		$retour = $retour.'</body>
+			 </table>
+			</div>';
+
+			return $retour;
+		}
+	}
+
+	public function retourne_formulaire_article()
+	{
+		$retour=  '
+		<form style="display:none;" role="form" id="modifarticle" method="post"><h3>Modification Article</h3>
+		<div class="form-group">
+		<label for="id"> Titre</label>
+		<input type="text" class="form-control" id="h3" name="h3" placeholder="Titre">
+		</div>
+		<div class="form-group">
+		<label for="date_deb"> Date Début</label>
+		<input type="text" class="form-control" id="date_deb" name="date_deb" placeholder="Date début">
+		</div>
+		<div class="form-group">
+		<label for="date_fin"> Date Fin</label>
+		<input type="text" class="form-control" id="date_fin" name="date_fin" placeholder="Date fin">
+		</div>
+				<div class="form-group">
+		<label for="corps"> Article</label>
+
+				<textarea class="form-control" rows="5" id="corps" name="corps" placeholder="Corps article"></textarea>
+		</div>
+		<button type="submit" class="btn btn-success btn-default"><span class="fas fa-power-off"></span>Modifier</button>
+				<button type="button"" class="btn btn-danger btn-default pull-left" ><span class="fas fa-times"></span> Cancel</button>
+				</form>';
+		return $retour;
+
+	}
+
 
 	public function genererMDP ($longueur = 8){
 		// initialiser la variable $mdp

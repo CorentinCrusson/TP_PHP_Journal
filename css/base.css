@@ -119,3 +119,8 @@ pre strong {
 #copyright a:hover, #copyright a:focus {
 	text-decoration: underline;
 }
+
+.map {
+        				height: 400px;
+        				width: 100%;
+      			}
