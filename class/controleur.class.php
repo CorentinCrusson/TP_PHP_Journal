@@ -235,38 +235,38 @@ public function retourne_modal_message()
 		return $retour;
 	}
 
-	public function retourne_article_journaliste()  {
-		$retour = '';
-		$retour = $retour.'<div class="table-responsive">
-		<table id="artJournaTable" class="table table-striped table-bordered" cellspacing="0" >
-					<thead style="color:#DC143C">
-						<tr>
-							<th>Titre Article</th>
-							<th>Page</th>
-							<th>Date Deb</th>
-							<th>Date Fin</th>
-							<th> </th>
-						</tr>  </thead> <tbody style="color:#FFEBCD">';
-	 $result = $this->vpdo->liste_art_journaliste('DM');
-	 if ($result != false) {
-		 while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
-				{
-						$retour = $retour.'<tr>
-						<th>'.$row->h3.'</th>
-						<th>'.$row->title.'</th>
-						<th>'.$row->date_deb.'</th>
-						<th>'.$row->date_fin.'</th>
-						<th><a href=""> Modifier </a></th>
-						</tr>';
-				}
+	public function retourne_article_journaliste()
+	{
 
-		$retour = $retour.'</body>
-			 </table>
-			</div>';
+		$retour='<script>$(document).ready(function() {$("#tart").dataTable();} )</script>
+	<div class="table-responsive">
+	<table id="tart" class="table table-striped table-bordered" cellspacing="0" style="visiblity: visible;">
+    <thead style="color: black;"><tr>
+        <th>Titre article</th>
+        <th>Page</th>
+        <th>Date deb</th>
+		<th>Date fin</th>
+		<th></th>
 
-			return $retour;
+    </tr></thead><tbody style="color: white;">';
+		$result = $this->vpdo->liste_art_journaliste($_SESSION['id']);
+		if ($result != false) {
+			while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
+			// parcourir chaque ligne sélectionnée
+			{
+
+				$retour = $retour . '<tr><td>'.$row->h3.'</td><td>'.$row->title.'</td><td>'.$row->date_deb.'</td><td>'.$row->date_fin.
+				'</td><td style="text-align: center;"><button type="button"" class="btn btn-primary btn-default pull-center"
+				onclick="modif_article('.$row->id.');">
+				<span class=" fas fa-edit "></span>
+				</button></td></tr>';
+			}
+
 		}
+		$retour = $retour .'</tbody></table></div>';
+		return $retour;
 	}
+
 
 	public function retourne_formulaire_article()
 	{
