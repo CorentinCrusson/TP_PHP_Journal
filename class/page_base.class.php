@@ -132,45 +132,47 @@ class page_base {
 
 	protected function affiche_menu() {
 		echo '
-				<ul >
-					<li ><a   href="'.$this->path.'/Accueil" > Accueil </a></li>
-					<li ><a   href="'.$this->path.'/Departement" > Departement </a></li>
-					<li ><a   href="'.$this->path.'/Ville" > Ville </a></li>
-				</ul>';
+
+
+			<ul class="navbar-nav ">
+					<li class="nav-item active"><a class="nav-link"  href="'.$this->path.'/Accueil" > Accueil </a></li>
+					<li class="nav-item"><a class="nav-link"  href="'.$this->path.'/Departement" > Departement </a></li>
+					<li class="nav-item"><a class="nav-link"  href="'.$this->path.'/Ville" > Ville </a></li>
+				';
 	}
 	protected function affiche_menu_connexion() {
 
 		if(!(isset($_SESSION['id']) && isset($_SESSION['type'])))
 		{
 			echo '
-					<ul >
-						<li><a  href="'.$this->path.'/Connexion">Connexion</a></li>
-					</ul>';
+						<li class="nav-item"><a class="nav-link" href="'.$this->path.'/Connexion">Connexion</a></li>
+					';
 		}
 		else
 		{
 			echo '
-					<ul >
-						<li><a  href="'.$this->path.'/Deconnexion">Déconnexion</a></li>
-					</ul>';
+						<li class="nav-item"><a class="nav-link" href="'.$this->path.'/Deconnexion">Déconnexion</a></li>
+					';
 		}
 	}
 	public function affiche_entete_menu() {
 		echo '
-		<div id="menu_horizontal">
-			<nav >
-				<div >
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	    <div class="container">
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="true" aria-label="Toggle navigation">
+	        <span class="navbar-toggler-icon"></span>
+	      </button>
+	      <div class="navbar-collapse" id="navbarResponsive">
 
 				';
 
 	}
 	public function affiche_footer_menu(){
 		echo '
-
-
-				</div>
-			</nav>
-		</div>';
+		</ul>
+		</div>
+		</div>
+		</nav>';
 
 	}
 
@@ -218,6 +220,8 @@ class page_base {
 				<head>
 					<title><?php echo $this->titre; ?></title>
 					<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+					<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 					<meta name="description" content="<?php echo $this->metadescription; ?>" />
 
 					<?php $this->affiche_keyword(); ?>

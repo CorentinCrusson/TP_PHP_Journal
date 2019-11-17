@@ -26,19 +26,39 @@ class controleur {
 	{
 
 		$retour='<section>';
+		$max = 100;
 		$result = $this->vpdo->liste_article($title);
 		if ($result != false) {
 			while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
 			// parcourir chaque ligne sélectionnée
 			{
+				$corps = $row->corps;
+				if (strlen($corps)>$max) {
+   				$deb = substr($row->corps, 0, $max);
+					$corps = str_replace($deb, "", $corps);
+				}
 
-				$retour = $retour . '<div class="card text-white bg-dark m-2" ><div class="card-body">
-				<article>
-					<h3 class="card-title">'.$row->h3.'</h3>
-					<p class="card-text">'.$row->corps.'</p>
-                    <p class="card-text"><i>'.'Ecrit par '.$row->intitule.' '.$row->nom.' '.$row->prenom.'    , le '.$row->date_redaction.'</i></p>
-				</article>
-				</div></div>';
+				$retour = $retour . '
+				<div class="card text-white bg-dark m-2" >
+				<div class="card-body">
+					<article>
+						<h3 class="card-title">'.$row->h3.'</h3>
+						<p class="card-text">'.$deb.'</p>
+
+						<div class="toggle">
+					    <div class="more">
+					        <p>'.$corps.'</p>
+					    </div>
+
+					    <div class="less">
+					        <a class="button-read-more button-read" href="#read">Lire la suite</a>
+					        <a class="button-read-less button-read" href="#read">Replier</a>
+					    </div>
+						</div>
+	          <p class="card-text"><i>'.'Ecrit par '.$row->intitule.' '.$row->nom.' '.$row->prenom.'    , le '.$row->date_redaction.'</i></p>
+					</article>
+				</div>
+			</div>';
 			}
 		$retour = $retour .'</section>';
 		return $retour;
@@ -256,8 +276,40 @@ public function retourne_modal_message()
 			{
 
 				$retour = $retour . '<tr><td>'.$row->h3.'</td><td>'.$row->title.'</td><td>'.$row->date_deb.'</td><td>'.$row->date_fin.
-				'</td><td style="text-align: center;"><button type="button"" class="btn btn-primary btn-default pull-center"
-				onclick="modif_article('.$row->id.');">
+				'</td><td style="text-align: center;"><button type="button" class="btn btn-primary btn-default pull-center"
+				value="Modifier" onclick="modif_article('.$row->id.');">
+				<span class=" fas fa-edit "></span>
+				</button></td></tr>';
+			}
+
+		}
+		$retour = $retour .'</tbody></table></div>';
+		return $retour;
+	}
+
+	public function retourne_article_nonValide()
+	{
+
+		$retour='<script>$(document).ready(function() {$("#tart").dataTable();} )</script>
+	<div class="table-responsive">
+	<table id="tart" class="table table-striped table-bordered" cellspacing="0" style="visiblity: visible;">
+    <thead style="color: black;"><tr>
+        <th>Titre article</th>
+        <th>Page</th>
+        <th>Date deb</th>
+		<th>Date fin</th>
+		<th></th>
+
+    </tr></thead><tbody style="color: white;">';
+		$result = $this->vpdo->liste_article_a_valider();
+		if ($result != false) {
+			while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
+			// parcourir chaque ligne sélectionnée
+			{
+
+				$retour = $retour . '<tr><td>'.$row->h3.'</td><td>'.$row->title.'</td><td>'.$row->date_deb.'</td><td>'.$row->date_fin.
+				'</td><td style="text-align: center;"><button type="button" class="btn btn-primary btn-default pull-center"
+				value="Valider" onclick="valide_article('.$row->id.');">
 				<span class=" fas fa-edit "></span>
 				</button></td></tr>';
 			}
@@ -268,10 +320,13 @@ public function retourne_modal_message()
 	}
 
 
-	public function retourne_formulaire_article()
+
+
+	public function retourne_formulaire_article($action)
 	{
+
 		$retour=  '
-		<form style="display:none;" role="form" id="modifarticle" method="post"><h3>Modification Article</h3>
+		<form style='.$action[0].' role="form" id="'.$action[1].'" method="post"><h3>'.$action[2].'</h3>
 		<div class="form-group">
 		<label for="id"> Titre</label>
 		<input type="text" class="form-control" id="h3" name="h3" placeholder="Titre">
@@ -289,7 +344,7 @@ public function retourne_modal_message()
 
 				<textarea class="form-control" rows="5" id="corps" name="corps" placeholder="Corps article"></textarea>
 		</div>
-		<button type="submit" class="btn btn-success btn-default"><span class="fas fa-power-off"></span>Modifier</button>
+		<button type="submit" class="btn btn-success btn-default"><span class="fas fa-power-off"></span>'.$action[3].'</button>
 				<button type="button"" class="btn btn-danger btn-default pull-left" ><span class="fas fa-times"></span> Cancel</button>
 				</form>';
 		return $retour;

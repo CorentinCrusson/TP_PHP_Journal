@@ -18,6 +18,8 @@
 
 		case 'accueil' :
 			$site->titre='Accueil';
+
+
 			$site-> right_sidebar=$site->rempli_right_sidebar();
 			$site-> left_sidebar=$controleur->retourne_carrousel();
 			$site-> left_sidebar=$controleur->retourne_article($site->titre);
@@ -65,9 +67,16 @@
 				break;
 		case 'article':
 			$site->titre='Article';
+			$site->js='voirPlus';
 			$site->js='jquery.dataTables.min';
+			$site->js='jquery-ui.min';
 			$site->js='dataTables.bootstrap4.min';
+
 			$site->css='dataTables.bootstrap4.min';
+			$site->css='jquery-ui.min';
+			$site->css='base';
+
+
 			$site->right_sidebar=$site->rempli_right_sidebar();
 			$site->left_sidebar=$controleur->retourne_article_journaliste();
 			$site->affiche();
@@ -80,10 +89,29 @@
 			break;
 
 		case 'proposerarticle':
-			$site->titre='Modifier Article';
-			$site->js='modifArticle';
+			$site->titre='Création Article';
+			$site->js='createArticle';
+
+			$site->js='jquery.validate.min';
+			$site->js='messages_fr';
+			$site->js='tooltipster.bundle.min';
+			$site->js='jquery-ui.min';
+			$site->js='datepicker-fr';
+			$site->js='jquery.dataTables.min';
+			$site->js='dataTables.bootstrap4.min';
+
+			$site->css='dataTables.bootstrap4.min';
+			$site->css='jquery-ui.min';
+			$site->css='jquery-ui.theme.min';
+			$site->css='tooltipster.bundle.min';
+			$site->css='all';
+			$site->css='tooltipster-sideTip-Light.min';
+
+			echo "<script src='js/ckeditor/ckeditor.js'></script>\n";
+
 			$site->right_sidebar=$site->rempli_right_sidebar();
-			$site->left_sidebar=$controleur->retourne_article_journaliste();
+			$site->left_sidebar=$controleur->retourne_formulaire_article(['""','createarticle','Création Article','Créer']);
+			$site->left_sidebar=$controleur->retourne_modal_message();
 			$site->affiche();
 			break;
 
@@ -110,8 +138,33 @@
 
 			$site->right_sidebar=$site->rempli_right_sidebar();
 			$site->left_sidebar=$controleur->retourne_article_journaliste();
-			$site->left_sidebar=$controleur->retourne_formulaire_article();
+			$site->left_sidebar=$controleur->retourne_formulaire_article(['"display: none;"','modifarticle','Modification Article','Modifier']);
 			$site->left_sidebar=$controleur->retourne_modal_message();
+			$site->affiche();
+			break;
+		case 'validerarticle':
+			$site->titre='Valider Article';
+			$site->js='valideArticle';
+
+			$site->js='jquery.validate.min';
+			$site->js='messages_fr';
+			$site->js='tooltipster.bundle.min';
+			$site->js='jquery-ui.min';
+			$site->js='datepicker-fr';
+			$site->js='jquery.dataTables.min';
+			$site->js='dataTables.bootstrap4.min';
+
+			$site->css='dataTables.bootstrap4.min';
+			$site->css='jquery-ui.min';
+			$site->css='jquery-ui.theme.min';
+			$site->css='tooltipster.bundle.min';
+			$site->css='all';
+			$site->css='tooltipster-sideTip-Light.min';
+
+			echo "<script src='js/ckeditor/ckeditor.js'></script>\n";
+
+			$site->right_sidebar=$site->rempli_right_sidebar();
+			$site->left_sidebar=$controleur->retourne_article_nonValide();
 			$site->affiche();
 			break;
 
