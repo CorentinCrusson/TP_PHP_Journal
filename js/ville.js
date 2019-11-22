@@ -49,13 +49,14 @@ function js_change_ville() {
                     $("#ville_long").val(retour ["ville_longitude_deg"]);
 
                     map.style.visibility = "visible";
+                    map.style.height = "400px";
                     $("#map").empty();
                     $("#map").append(init(Number(retour ["ville_longitude_deg"]),Number(retour ["ville_latitude_deg"] ) ));
               },
      			error: function(jqXHR, textStatus)
       			{
       			// traitement des erreurs ajax
-              infos_ville.style.visibility = "hidden";
+              map.style.visibility = "hidden";
            			if (jqXHR.status === 0){alert("Not connect.n Verify Network.");}
           			else if (jqXHR.status == 404){alert("Requested page not found. [404]");}
       				else if (jqXHR.status == 500){alert("Internal Server Error [500].");}

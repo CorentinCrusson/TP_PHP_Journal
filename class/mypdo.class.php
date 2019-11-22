@@ -48,8 +48,22 @@ class mypdo extends PDO{
 
     public function liste_art_journaliste($journaliste)
     {
-      $requete='select a.h3,p.title,a.date_deb,a.date_fin FROM article a,page p,salarie s WHERE p.id = a.page AND a.salarie = s.id AND s.login = "'.$journaliste.'"';
+        $requete='select a.h3,p.title,a.date_deb,a.date_fin,a.id FROM article a,page p,salarie s WHERE p.id = a.page AND a.salarie = s.id AND s.login = "'.$journaliste.'"';
 
+      	$result=$this->connexion->query($requete);
+      	if ($result)
+
+      	{
+
+      			return ($result);
+     		}
+      	return null;
+    }
+
+    public function liste_article_a_valider()
+    {
+
+		    $requete='select DISTINCT a.h3,p.title,a.date_deb,a.date_fin,a.id FROM article a,page p,salarie s WHERE a.publie=0';
       	$result=$this->connexion->query($requete);
       	if ($result)
 
@@ -74,6 +88,72 @@ class mypdo extends PDO{
     	}
     	return null;
     }
+
+    public function create_article($tab)
+    {
+      $errors         = array();
+      $data 			= array();
+      $corps=utf8_encode($tab['corps']);
+        $requete='insert into article(h3,corps,date_deb,date_fin,num_ordre,page,publie,salarie) values('
+        .$this->connexion ->quote($tab['titre']) .','
+        .$this->connexion ->quote($corps) .','
+        .$this->connexion ->quote($tab['date_deb']) .','
+        .$this->connexion ->quote($tab['date_fin']) .','
+        .$this->connexion ->quote(0) .','
+        .$this->connexion ->quote(3) .','
+        .$this->connexion ->quote(1) .','
+        .$_SESSION['type'] .');';
+
+       $nblignes=$this->connexion -> exec($requete);
+      if ($nblignes !=1)
+      {
+        $errors['requete']='Pas de insert d\'article :'.$requete;
+      }
+
+
+
+      if ( ! empty($errors)) {
+        $data['success'] = false;
+        $data['errors']  = $errors;
+      } else {
+
+        $data['success'] = true;
+        $data['message'] = 'Création article ok!';
+      }
+      return $data;
+    }
+
+    public function modif_article($tab)
+    {
+        	$errors         = array();
+    	$data 			= array();
+    $corps=utf8_encode($tab['corps']);
+    	$requete='update article '
+    	.'set h3='.$this->connexion ->quote($tab['titre']) .','
+    	.'date_deb='.$this->connexion ->quote($tab['date_deb']) .','
+    	.'date_fin='.$this->connexion ->quote($tab['date_fin']) .','
+    	.'corps='.$this->connexion ->quote($corps)
+ 		.' where id='.$_SESSION['id_article'] .';';
+
+     $nblignes=$this->connexion -> exec($requete);
+    if ($nblignes !=1)
+    {
+    	$errors['requete']='Pas de modifications d\'article :'.$requete;
+    }
+
+
+
+    	if ( ! empty($errors)) {
+    		$data['success'] = false;
+    		$data['errors']  = $errors;
+    	} else {
+
+    		$data['success'] = true;
+    		$data['message'] = 'Modification article ok!';
+    	}
+    	return $data;
+    }
+
 
     public function trouve_toutes_les_ville_via_un_departement($id){
       $id = $id.'%';
@@ -100,6 +180,38 @@ class mypdo extends PDO{
     		return ($result);
     	}
       return null;
+    }
+
+    public function trouve_article_via_id($id)
+    {
+      $requete='select a.h3,a.date_deb,a.date_fin,a.corps from article a
+    			where a.id='.$id.';';
+
+    	$result=$this->connexion ->query($requete);
+    	if ($result)
+
+    	{
+
+    		return ($result);
+    	}
+    	return null;
+
+    }
+
+    public function publie_article($tab)
+    {
+      $requete='UPDATE article SET publie=1 WHERE id='.$tab['idArticle'];
+
+      $result=$this->connexion ->query($requete);
+      if ($result)
+      {
+        if ($result->rowCount()==1)
+        {
+          return ($result);
+        }
+      }
+      return null;
+
     }
 
     public function connect($tab)

@@ -3,7 +3,7 @@
 --couleurDeSection:#FFF;
 }
 
-/* Général */
+/* Gï¿½nï¿½ral */
 body {
 	color: #F0E39E;
 	background: #2C2F22;
@@ -119,11 +119,11 @@ body {
 	padding: 10px 5px;
 }
 #global {
-	max-width: 1000px; 
-	margin: 0 auto; 
+	max-width: 1000px;
+	margin: 0 auto;
 }
 
-/* En-tête */
+/* En-tï¿½te */
 
 header {
 	padding: 20px 20px 20px 0;
@@ -148,14 +148,34 @@ margin: 0 10px 10px 10px;
 }
 
 
+  /* Liens */
+  a {
+  	color: mediumblue;
+  	text-decoration: underline;
+  }
+  a:hover, a:focus {
+  	color: crimson;
+  }
+  a img {
+  	border: none;
+  }
+  li a{
+    text-decoration: none;
+  }
+
+  /* Paragraphes */
+  p {
+  	margin: .75em 0;
+  }
+
 /* Bloc central contenant section  */
 #conteneur {
-	width: 100%; 
+	width: 100%;
 
 	display:table;
 	height:auto;
 }
-.gauche { 
+.gauche {
  float:left;
 
   width:69%;
@@ -164,7 +184,7 @@ margin: 0 10px 10px 10px;
   bottom:10px;
 
 }
-.droite { 
+.droite {
 	float:right;
 
   top:10px;
@@ -178,7 +198,7 @@ margin: 0 10px 10px 10px;
 section {
 	color: #363B29;
 	background: var(--couleurDeSection);
-display:table-cell;	
+display:table-cell;
 
 
 height:100%;
@@ -215,7 +235,6 @@ section strong {
 #menu_horizontal ul a
 {
 	display:block;
-	background: #181A12;
 	text-decoration:none;
 	font-weight:700;
 	font-size:12px;
@@ -225,7 +244,6 @@ section strong {
 }
 
 nav a {
-	color: #FF6533;
 }
 
 nav a:hover, nav a:focus,nav a.actif {
@@ -280,10 +298,10 @@ z-index: 999;
 /* Contenu */
 
 article{
- 
+
 	padding: 5px 5px;
 
-	
+
 }
 
 section p, section li {
@@ -297,6 +315,21 @@ footer {
 	font-size: .85em;
 }
 
+/* Tableau */
+thead{
+	color: #A1B55D;
+	text-shadow: 3px 2px black;
+}
+tbody {
+	 color: white;
+	 text-shadow: 2px 1px black;
+}
+
+/* MAP */
+.map {
+        				width: 100%;
+      			}
+
 /* Mention de copyright */
 #copyright {
 	margin: 8px 0 0 0;
@@ -304,3 +337,17 @@ footer {
 	text-align: left;
 }
 
+/* Copyright */
+ #copyright {
+	 margin: 20px 0 5px 0;
+	 text-align: right;
+	 font-size: .8em;
+	 color: #848F63;
+ }
+ #copyright a {
+	 color: #848F63;
+	 text-decoration: none;
+ }
+ #copyright a:hover, #copyright a:focus {
+	 text-decoration: underline;
+ }

@@ -6,8 +6,9 @@
 	$controleur=new controleur();
 	$request = strtolower($_SERVER['REQUEST_URI']);
 	$params = explode('/', trim($request, '/'));
-    $params = array_filter($params);
+  $params = array_filter($params);
 
+	$_SESSION["KCFINDER"] = array("disabled" => false);
 	if (!isset($params[3]))
 	{
 
@@ -17,10 +18,11 @@
 
 		case 'accueil' :
 			$site->titre='Accueil';
+			$site->js='imgResponsive';
+
 			$site-> right_sidebar=$site->rempli_right_sidebar();
 			$site-> left_sidebar=$controleur->retourne_carrousel();
 			$site-> left_sidebar=$controleur->retourne_article($site->titre);
-			$site-> left_sidebar=$controleur->retourne_article_journaliste();
 			$site->affiche();
 			break;
 
@@ -28,12 +30,13 @@
 			$site->titre='Connexion';
 			$site->js='jquery.validate.min';
 			$site->js='messages_fr';
-			$site->js='jquery.tooltipster.min';
-			$site->js='all';
+			$site->js='tooltipster.bundle.min';
 			$site->js='connexion';
+			$site->js='all';
+
+			$site->css='tooltipster.bundle.min';
 			$site->css='all';
-			$site->css='tooltipster';
-			$site->css='tooltipster-sideTip-Light.min';
+			$site->css='tooltipster-sideTip-light.min';
 			$site-> right_sidebar=$site->rempli_right_sidebar();
 			$site-> left_sidebar=$controleur->retourne_formulaire_login();
 			$site-> left_sidebar=$controleur->retourne_modal_message();
@@ -63,11 +66,107 @@
 				$site->left_sidebar=$controleur->affiche_infos_ville();
 				$site->affiche();
 				break;
+		case 'article':
+			$site->titre='Article';
+			$site->js='voirPlus';
+			$site->js='jquery.dataTables.min';
+			$site->js='jquery-ui.min';
+			$site->js='dataTables.bootstrap4.min';
+
+			$site->css='dataTables.bootstrap4.min';
+			$site->css='jquery-ui.min';
+			$site->css='base';
+
+
+			$site->right_sidebar=$site->rempli_right_sidebar();
+			$site->left_sidebar=$controleur->retourne_article_journaliste();
+			$site->affiche();
+			break;
 
 		case 'deconnexion' :
 			$_SESSION=array();
 			session_destroy();
-			echo '<script>document.location.href="index.php"; </script>';
+			echo '<script>document.location.href="index.php/Accueil"; </script>';
+			break;
+
+		case 'proposerarticle':
+			$site->titre='Création Article';
+			$site->js='createArticle';
+
+			$site->js='jquery.validate.min';
+			$site->js='messages_fr';
+			$site->js='tooltipster.bundle.min';
+			$site->js='jquery-ui.min';
+			$site->js='datepicker-fr';
+			$site->js='jquery.dataTables.min';
+			$site->js='dataTables.bootstrap4.min';
+
+			$site->css='dataTables.bootstrap4.min';
+			$site->css='jquery-ui.min';
+			$site->css='jquery-ui.theme.min';
+			$site->css='tooltipster.bundle.min';
+			$site->css='all';
+			$site->css='tooltipster-sideTip-Light.min';
+
+			echo "<script src='js/ckeditor/ckeditor.js'></script>\n";
+
+			$site->right_sidebar=$site->rempli_right_sidebar();
+			$site->left_sidebar=$controleur->retourne_formulaire_article(['""','createarticle','Création Article','Créer']);
+			$site->left_sidebar=$controleur->retourne_modal_message();
+			$site->affiche();
+			break;
+
+		case 'modifierarticle':
+			$site->titre='Modifier Article';
+			$site->js='modifArticle';
+
+			$site->js='jquery.validate.min';
+			$site->js='messages_fr';
+			$site->js='tooltipster.bundle.min';
+			$site->js='jquery-ui.min';
+			$site->js='datepicker-fr';
+			$site->js='jquery.dataTables.min';
+			$site->js='dataTables.bootstrap4.min';
+
+			$site->css='dataTables.bootstrap4.min';
+			$site->css='jquery-ui.min';
+			$site->css='jquery-ui.theme.min';
+			$site->css='tooltipster.bundle.min';
+			$site->css='all';
+			$site->css='tooltipster-sideTip-Light.min';
+
+			echo "<script src='js/ckeditor/ckeditor.js'></script>\n";
+
+			$site->right_sidebar=$site->rempli_right_sidebar();
+			$site->left_sidebar=$controleur->retourne_article_journaliste();
+			$site->left_sidebar=$controleur->retourne_formulaire_article(['"display: none;"','modifarticle','Modification Article','Modifier']);
+			$site->left_sidebar=$controleur->retourne_modal_message();
+			$site->affiche();
+			break;
+		case 'validerarticle':
+			$site->titre='Valider Article';
+			$site->js='valideArticle';
+
+			$site->js='jquery.validate.min';
+			$site->js='messages_fr';
+			$site->js='tooltipster.bundle.min';
+			$site->js='jquery-ui.min';
+			$site->js='datepicker-fr';
+			$site->js='jquery.dataTables.min';
+			$site->js='dataTables.bootstrap4.min';
+
+			$site->css='dataTables.bootstrap4.min';
+			$site->css='jquery-ui.min';
+			$site->css='jquery-ui.theme.min';
+			$site->css='tooltipster.bundle.min';
+			$site->css='all';
+			$site->css='tooltipster-sideTip-Light.min';
+
+			echo "<script src='js/ckeditor/ckeditor.js'></script>\n";
+
+			$site->right_sidebar=$site->rempli_right_sidebar();
+			$site->left_sidebar=$controleur->retourne_article_nonValide();
+			$site->affiche();
 			break;
 
 		default:

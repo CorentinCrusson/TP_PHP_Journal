@@ -5,7 +5,7 @@ class page_base {
 	protected $left_sidebar;
 	protected $titre;
 	protected $js=array('jquery-3.4.1.min','bootstrap.min');
-	protected $css=array('perso','bootstrap.min','base', 'modele');
+	protected $css=array('bootstrap.min','style-site','modele');
 	protected $page;
 	protected $metadescription="Bienvenue sur le site de promotion des sites touristiques de FRANCE";
 	protected $metakeyword=array('france','site touristique','tourisme','géolocalisation' );
@@ -118,7 +118,7 @@ class page_base {
 		echo'
            <header>
 
-				<img  class="img-responsive"  width="292" height="136" src="'.$this->path.'/image/logo.jpg" alt="logo" style="float:left;padding: 0 10px 10px 0;"/>
+				<img  class="img-responsive d-none d-md-block"  width="292" height="136" src="'.$this->path.'/image/logo.jpg" alt="logo" style="float:left;padding: 0 10px 10px 0;"/>
 				<h1>
 					Sites de france
 				</h1>
@@ -132,34 +132,36 @@ class page_base {
 
 	protected function affiche_menu() {
 		echo '
-				<ul >
-					<li ><a   href="'.$this->path.'/Accueil" > Accueil </a></li>
-					<li ><a   href="'.$this->path.'/Departement" > Departement </a></li>
-					<li ><a   href="'.$this->path.'/Ville" > Ville </a></li>
-				</ul>';
+					<li class="nav-item active"> <a class="nav-link"  href="'.$this->path.'/Accueil" > Accueil <span class="sr-only">(current)</span></a></li>
+					<li class="nav-item" > <a class="nav-link"  href="'.$this->path.'/Departement" > Departement </a></li>
+					<li class="nav-item" > <a class="nav-link"  href="'.$this->path.'/Ville" > Ville </a></li>
+				';
 	}
 	protected function affiche_menu_connexion() {
 
 		if(!(isset($_SESSION['id']) && isset($_SESSION['type'])))
 		{
 			echo '
-					<ul >
-						<li><a  href="'.$this->path.'/Connexion">Connexion</a></li>
-					</ul>';
+						<li class="nav-item"><a class="nav-link" href="'.$this->path.'/Connexion">Connexion</a></li>
+					';
 		}
 		else
 		{
 			echo '
-					<ul >
-						<li><a  href="'.$this->path.'/Deconnexion">Déconnexion</a></li>
-					</ul>';
+
+						<li class="nav-item"><a class="nav-link" href="'.$this->path.'/Deconnexion">Déconnexion</a></li>
+					';
 		}
 	}
 	public function affiche_entete_menu() {
 		echo '
 		<div id="menu_horizontal">
-			<nav >
-				<div >
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarText">
+				<ul class="navbar-nav mr-auto">
 
 				';
 
@@ -167,7 +169,7 @@ class page_base {
 	public function affiche_footer_menu(){
 		echo '
 
-
+					</ul>
 				</div>
 			</nav>
 		</div>';
@@ -218,6 +220,8 @@ class page_base {
 				<head>
 					<title><?php echo $this->titre; ?></title>
 					<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+					<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 					<meta name="description" content="<?php echo $this->metadescription; ?>" />
 
 					<?php $this->affiche_keyword(); ?>
@@ -233,11 +237,11 @@ class page_base {
 						<?php $this->affiche_menu_connexion(); ?>
 						<?php $this->affiche_footer_menu(); ?>
 
-  						<div style="clear:both;">
-    						<div style="float:left;width:75%;">
+  						<div class="d-flex flex-wrap align-content-around " style="clear:both;">
+    						<div class="p-2 left" style="float:left;">
      							<?php echo $this->left_sidebar; ?>
     						</div>
-    						<div style="float:left;width:25%;">
+    						<div class="p-2 right" style="float:left;">
 								<?php echo $this->right_sidebar;?>
     						</div>
   						</div>
