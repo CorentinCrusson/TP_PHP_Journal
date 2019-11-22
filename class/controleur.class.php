@@ -37,24 +37,16 @@ class controleur {
    				$deb = substr($row->corps, 0, $max);
 					$corps = str_replace($deb, "", $corps);
 				}
-
 				$retour = $retour . '
 				<div class="card text-white bg-dark m-2" >
 				<div class="card-body">
 					<article>
 						<h3 class="card-title">'.$row->h3.'</h3>
-						<p class="card-text">'.$deb.'</p>
 
-						<div class="toggle">
-					    <div class="more">
-					        <p>'.$corps.'</p>
-					    </div>
-
-					    <div class="less">
-					        <a class="button-read-more button-read" href="#read">Lire la suite</a>
-					        <a class="button-read-less button-read" href="#read">Replier</a>
-					    </div>
-						</div>
+							<div id="summary">
+				        <p class="collapse card-text" id="collapseSummary">'.$deb.'<span id="dots">...</span><span id="more">'.$corps.'</span></p>
+				        <a class="collapsed" data-toggle="collapse" href="#collapseSummary" aria-expanded="false" aria-controls="collapseSummary"></a>
+				      </div>
 	          <p class="card-text"><i>'.'Ecrit par '.$row->intitule.' '.$row->nom.' '.$row->prenom.'    , le '.$row->date_redaction.'</i></p>
 					</article>
 				</div>
@@ -102,12 +94,12 @@ class controleur {
 	    $retour = '';
 	    $retour = $retour.'<div class="table-responsive">
 	    <table id="deparTable" class="table table-striped table-bordered" cellspacing="0" >
-            <thead style="color:#DC143C">
+            <thead>
             	<tr>
             		<th>Code departement</th>
             		<th>Departement</th>
             		<th>Region</th>
-            	</tr>  </thead> <tbody style="color:#FFEBCD">';
+            	</tr>  </thead> <tbody>';
 		 $result = $this->vpdo->liste_dep();
 		 if ($result != false) {
 			 while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
@@ -178,7 +170,7 @@ class controleur {
 
 		';
 		$retour = $retour . '
-		 <div id="map" class="map" style="visibility: hidden;">
+		 <div id="map" class="map" style="visibility: hidden; height:0%">
 		 </div>
 		';
 
@@ -261,14 +253,14 @@ public function retourne_modal_message()
 		$retour='<script>$(document).ready(function() {$("#tart").dataTable();} )</script>
 	<div class="table-responsive">
 	<table id="tart" class="table table-striped table-bordered" cellspacing="0" style="visiblity: visible;">
-    <thead style="color: black;"><tr>
+    <thead><tr>
         <th>Titre article</th>
         <th>Page</th>
         <th>Date deb</th>
 		<th>Date fin</th>
 		<th></th>
 
-    </tr></thead><tbody style="color: white;">';
+    </tr></thead><tbody>';
 		$result = $this->vpdo->liste_art_journaliste($_SESSION['id']);
 		if ($result != false) {
 			while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )

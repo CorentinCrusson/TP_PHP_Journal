@@ -18,7 +18,7 @@
 
 		case 'accueil' :
 			$site->titre='Accueil';
-
+			$site->js='imgResponsive';
 
 			$site-> right_sidebar=$site->rempli_right_sidebar();
 			$site-> left_sidebar=$controleur->retourne_carrousel();
@@ -33,9 +33,10 @@
 			$site->js='tooltipster.bundle.min';
 			$site->js='connexion';
 			$site->js='all';
+
 			$site->css='tooltipster.bundle.min';
 			$site->css='all';
-			$site->css='tooltipster-sideTip-Light.min';
+			$site->css='tooltipster-sideTip-light.min';
 			$site-> right_sidebar=$site->rempli_right_sidebar();
 			$site-> left_sidebar=$controleur->retourne_formulaire_login();
 			$site-> left_sidebar=$controleur->retourne_modal_message();
