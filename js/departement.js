@@ -1,3 +1,3 @@
 $(document).ready(function() {
-	$("#deparTable").dataTable();
-	} );
+  $("#deparTable").dataTable();
+});

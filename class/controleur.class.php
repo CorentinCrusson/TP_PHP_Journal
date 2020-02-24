@@ -22,31 +22,39 @@ class controleur {
 				}
 		}
 	}
+
 	public function retourne_article($title)
 	{
 
 		$retour='<section>';
-		$max = 100;
+		$max = 200;
+		$nb = 0;
 		$result = $this->vpdo->liste_article($title);
 		if ($result != false) {
 			while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
 			// parcourir chaque ligne sélectionnée
 			{
+				$nb +=1;
 				$corps = $row->corps;
-				if (strlen($corps)>$max) {
-   				$deb = substr($row->corps, 0, $max);
-					$corps = str_replace($deb, "", $corps);
-				}
+                $more = '';                
+                if (strlen($corps)>$max) {
+                    $more = substr($corps,$max);
+                    $corps = substr($corps,0,$max);
+                }
 				$retour = $retour . '
 				<div class="card text-white bg-dark m-2" >
 				<div class="card-body">
 					<article>
 						<h3 class="card-title">'.$row->h3.'</h3>
 
-							<div id="summary">
-				        <p class="collapse card-text" id="collapseSummary">'.$deb.'<span id="dots">...</span><span id="more">'.$corps.'</span></p>
-				        <a class="collapsed" data-toggle="collapse" href="#collapseSummary" aria-expanded="false" aria-controls="collapseSummary"></a>
-				      </div>
+						<div id="summary">
+							<p class="collapse card-text" id="collapseSummary">'.$corps.'<!--
+								--><span id="dots '.$nb.'">...</span><!--
+								--><span id="more '.$nb.'" style="display:none">'.$more.'</span>
+							</p>
+							<button onclick="display('.$nb.')" id="myBtn '.$nb.'">Lire plus</button>
+							<a class="collapsed" data-toggle="collapse" href="#collapseSummary" aria-expanded="false" aria-controls="collapseSummary"></a>
+				      	</div>
 	          <p class="card-text"><i>'.'Ecrit par '.$row->intitule.' '.$row->nom.' '.$row->prenom.'    , le '.$row->date_redaction.'</i></p>
 					</article>
 				</div>
@@ -140,7 +148,7 @@ class controleur {
 		public function affiche_combo_ville(){
 
 			$retour = '<div class="left_sidebar">
-			<SELECT id="liste_ville" style="visibility: hidden" onChange="js_change_ville()">';
+			<SELECT id="liste_ville" style="display: none" onChange="js_change_ville()">';
 
 			//Combo Box Departement
 			$retour = $retour.'</SELECT> </div>';
@@ -151,7 +159,7 @@ class controleur {
 	public function affiche_infos_ville(){
 
 		$retour = '<div class="left_sidebar">
-		<div id="infos_ville" style="visibility: hidden">
+		<div id="infos_ville" style="display: none">
 
 		<label> Département : </label>
 		<input id="iddep" />
@@ -170,7 +178,7 @@ class controleur {
 
 		';
 		$retour = $retour . '
-		 <div id="map" class="map" style="visibility: hidden; height:0%">
+		 <div id="map" class="map" style="display: none; height:0%">
 		 </div>
 		';
 
@@ -238,7 +246,7 @@ public function retourne_modal_message()
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" onclick="hdModalRetour();">Close</button>
+						<button type="button" class="btn btn-default" onclick="hdModalRetour();" >Close</button>
 					</div>
 				</div>
 			</div>
@@ -250,9 +258,9 @@ public function retourne_modal_message()
 	public function retourne_article_journaliste()
 	{
 
-		$retour='<script>$(document).ready(function() {$("#tart").dataTable();} )</script>
+		$retour='<script>$(document).ready(function() {$("#tart").dataTable().fadeIn();} )</script>
 	<div class="table-responsive">
-	<table id="tart" class="table table-striped table-bordered" cellspacing="0" style="visiblity: visible;">
+	<table id="tart" class="table table-striped table-bordered" cellspacing="0" style="display: none;">
     <thead><tr>
         <th>Titre article</th>
         <th>Page</th>
@@ -260,8 +268,8 @@ public function retourne_modal_message()
 		<th>Date fin</th>
 		<th></th>
 
-    </tr></thead><tbody>';
-		$result = $this->vpdo->liste_art_journaliste($_SESSION['id']);
+	</tr></thead><tbody>';
+		$result = $this->vpdo->liste_art_via_idSalarie($_SESSION['id']);
 		if ($result != false) {
 			while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
 			// parcourir chaque ligne sélectionnée
@@ -270,7 +278,7 @@ public function retourne_modal_message()
 				$retour = $retour . '<tr><td>'.$row->h3.'</td><td>'.$row->title.'</td><td>'.$row->date_deb.'</td><td>'.$row->date_fin.
 				'</td><td style="text-align: center;"><button type="button" class="btn btn-primary btn-default pull-center"
 				value="Modifier" onclick="modif_article('.$row->id.');">
-				<span class=" fas fa-edit "></span>
+				<span class="fas fa-edit"></span>
 				</button></td></tr>';
 			}
 
@@ -279,13 +287,13 @@ public function retourne_modal_message()
 		return $retour;
 	}
 
-	public function retourne_article_nonValide()
+	public function retourne_liste_article()
 	{
 
-		$retour='<script>$(document).ready(function() {$("#tart").dataTable();} )</script>
+		$retour='<script>$(document).ready(function() {$("#tart").dataTable().fadeIn();} )</script>
 	<div class="table-responsive">
-	<table id="tart" class="table table-striped table-bordered" cellspacing="0" style="visiblity: visible;">
-    <thead style="color: black;"><tr>
+	<table id="tart" class="table table-striped table-bordered" cellspacing="0" style="display: none;">
+    <thead><tr>
         <th>Titre article</th>
         <th>Page</th>
         <th>Date deb</th>
@@ -293,16 +301,25 @@ public function retourne_modal_message()
 		<th></th>
 
     </tr></thead><tbody style="color: white;">';
-		$result = $this->vpdo->liste_article_a_valider();
+		$result = $this->vpdo->liste_art_via_idSalarie('%');
 		if ($result != false) {
 			while ( $row = $result->fetch ( PDO::FETCH_OBJ ) )
 			// parcourir chaque ligne sélectionnée
 			{
 
 				$retour = $retour . '<tr><td>'.$row->h3.'</td><td>'.$row->title.'</td><td>'.$row->date_deb.'</td><td>'.$row->date_fin.
-				'</td><td style="text-align: center;"><button type="button" class="btn btn-primary btn-default pull-center"
-				value="Valider" onclick="valide_article('.$row->id.');">
-				<span class=" fas fa-edit "></span>
+				'</td><td style="text-align: center;">';
+				if ($row->publie==0) {
+					$buttonType = 'btn-succes';
+					$spanType = 'fa-check';			
+				} else {
+					$buttonType = 'btn-danger';	
+					$spanType = 'fa-times';		
+				}
+				
+				$retour = $retour . '<button type="button" class="btn '.$buttonType.' btn-default pull-center"
+				onclick="valide_article("'.$row->id.'-'.$row->publie.');">
+				<span class=" fas '.$spanType.' "></span>
 				</button></td></tr>';
 			}
 

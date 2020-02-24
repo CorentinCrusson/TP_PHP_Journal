@@ -19,6 +19,7 @@
 		case 'accueil' :
 			$site->titre='Accueil';
 			$site->js='imgResponsive';
+			$site->js='readmore';
 
 			$site-> right_sidebar=$site->rempli_right_sidebar();
 			$site-> left_sidebar=$controleur->retourne_carrousel();
@@ -29,13 +30,16 @@
 		case 'connexion' :
 			$site->titre='Connexion';
 			$site->js='jquery.validate.min';
+			$site->js='jquery.tooltipster.min';
 			$site->js='messages_fr';
 			$site->js='tooltipster.bundle.min';
 			$site->js='connexion';
+			$site->js='fontawesome.min';
 			$site->js='all';
 
 			$site->css='tooltipster.bundle.min';
 			$site->css='all';
+			$site->css='fontawesome.min';
 			$site->css='tooltipster-sideTip-light.min';
 			$site-> right_sidebar=$site->rempli_right_sidebar();
 			$site-> left_sidebar=$controleur->retourne_formulaire_login();
@@ -86,7 +90,8 @@
 		case 'deconnexion' :
 			$_SESSION=array();
 			session_destroy();
-			echo '<script>document.location.href="index.php/Accueil"; </script>';
+
+			echo '<script> document.location.href="./Accueil"; </script>';
 			break;
 
 		case 'proposerarticle':
@@ -100,6 +105,7 @@
 			$site->js='datepicker-fr';
 			$site->js='jquery.dataTables.min';
 			$site->js='dataTables.bootstrap4.min';
+			$site->js='all';
 
 			$site->css='dataTables.bootstrap4.min';
 			$site->css='jquery-ui.min';
@@ -127,6 +133,7 @@
 			$site->js='datepicker-fr';
 			$site->js='jquery.dataTables.min';
 			$site->js='dataTables.bootstrap4.min';
+			$site->js='all';
 
 			$site->css='dataTables.bootstrap4.min';
 			$site->css='jquery-ui.min';
@@ -134,6 +141,7 @@
 			$site->css='tooltipster.bundle.min';
 			$site->css='all';
 			$site->css='tooltipster-sideTip-Light.min';
+			$site->css='fontawesome.min';
 
 			echo "<script src='js/ckeditor/ckeditor.js'></script>\n";
 
@@ -153,7 +161,8 @@
 			$site->js='jquery-ui.min';
 			$site->js='datepicker-fr';
 			$site->js='jquery.dataTables.min';
-			$site->js='dataTables.bootstrap4.min';
+			$site->js='dataTables.bootstrap4.min';			
+			$site->js='all';
 
 			$site->css='dataTables.bootstrap4.min';
 			$site->css='jquery-ui.min';
@@ -165,7 +174,7 @@
 			echo "<script src='js/ckeditor/ckeditor.js'></script>\n";
 
 			$site->right_sidebar=$site->rempli_right_sidebar();
-			$site->left_sidebar=$controleur->retourne_article_nonValide();
+			$site->left_sidebar=$controleur->retourne_liste_article();
 			$site->affiche();
 			break;
 
