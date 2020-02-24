@@ -46,9 +46,9 @@ class mypdo extends PDO{
     	return null;
     }
 
-    public function liste_art_journaliste($journaliste)
+    public function liste_art_via_idSalarie($idSalarie)
     {
-        $requete='select a.h3,p.title,a.date_deb,a.date_fin,a.id FROM article a,page p,salarie s WHERE p.id = a.page AND a.salarie = s.id AND s.login = "'.$journaliste.'"';
+        $requete='select a.h3,p.title,a.date_deb,a.date_fin,a.id,a.publie FROM article a,page p,salarie s WHERE a.salarie = s.id AND s.login LIKE "'.$idSalarie.'"';
 
       	$result=$this->connexion->query($requete);
       	if ($result)
@@ -59,11 +59,11 @@ class mypdo extends PDO{
      		}
       	return null;
     }
-
-    public function liste_article_a_valider()
+/*
+    public function liste_article_confondu()
     {
 
-		    $requete='select DISTINCT a.h3,p.title,a.date_deb,a.date_fin,a.id FROM article a,page p,salarie s WHERE a.publie=0';
+		    $requete='select a.h3,p.title,a.date_deb,a.date_fin,a.id,s.nom,a.publie FROM article a,page p,salarie s WHERE a.salarie = s.id';
       	$result=$this->connexion->query($requete);
       	if ($result)
 
@@ -72,7 +72,7 @@ class mypdo extends PDO{
       			return ($result);
      		}
       	return null;
-    }
+    }*/
 
     public function liste_dep()
     {
@@ -133,8 +133,7 @@ class mypdo extends PDO{
     	.'date_deb='.$this->connexion ->quote($tab['date_deb']) .','
     	.'date_fin='.$this->connexion ->quote($tab['date_fin']) .','
     	.'corps='.$this->connexion ->quote($corps)
- 		.' where id='.$_SESSION['id_article'] .';';
-
+ 		.' where id='.$_SESSION['id_article'] .';'; 
      $nblignes=$this->connexion -> exec($requete);
     if ($nblignes !=1)
     {
@@ -200,7 +199,12 @@ class mypdo extends PDO{
 
     public function publie_article($tab)
     {
-      $requete='UPDATE article SET publie=1 WHERE id='.$tab['idArticle'];
+      var_dump($tab);
+      $tab['idArticle'].split('-');
+      $idArticle = $tab['idArticle'][0];
+      $publie = $tab['idArticle'][1];
+      $publie = ($publie==0)? 1:0;
+      $requete='UPDATE article SET publie='.$publie.' WHERE id='.$idArticle;
 
       $result=$this->connexion ->query($requete);
       if ($result)
@@ -217,7 +221,7 @@ class mypdo extends PDO{
     public function connect($tab)
         {
 
-        		$requete='select * from salarie where login="'.$tab['id'].'" and mp=MD5("'.$tab['mp'].'") and grade='.$tab['categ'].';';
+        		$requete='SELECT * FROM salarie WHERE login="'.$tab['id'].'" AND mp=MD5("'.$tab['mp'].'") AND grade='.$tab['categ'].';';
 
         	$result=$this->connexion ->query($requete);
         	if ($result)

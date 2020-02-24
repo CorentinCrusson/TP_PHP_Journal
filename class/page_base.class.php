@@ -4,7 +4,7 @@ class page_base {
 	protected $right_sidebar;
 	protected $left_sidebar;
 	protected $titre;
-	protected $js=array('jquery-3.4.1.min','bootstrap.min');
+	protected $js=array('jquery-3.4.1.min','bootstrap.min','active_menu');
 	protected $css=array('bootstrap.min','style-site','modele');
 	protected $page;
 	protected $metadescription="Bienvenue sur le site de promotion des sites touristiques de FRANCE";
@@ -156,12 +156,12 @@ class page_base {
 	public function affiche_entete_menu() {
 		echo '
 		<div id="menu_horizontal">
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark top-navbar" data-toggle="sticky-onscroll">
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarText">
-				<ul class="navbar-nav mr-auto">
+				<ul class="nav navbar-nav mr-auto">
 
 				';
 
@@ -186,7 +186,7 @@ class page_base {
 										<p>12 rue des gones</br>
 										44000 NANTES</br>
 										Tel : 02.40.27.11.71</br>
-										Mail : avst44@gmai.com</p>
+										Mail : avst44@gmail.com</p>
 
 											<a  href="Contact" class="button">Contact</a>
                 </article>
@@ -197,14 +197,14 @@ class page_base {
 	/****************************************** Affichage du pied de la page ***************************/
 	private function affiche_footer() {
 		echo '
-		<!-- Footer -->
-			<footer>
-				<p>Site de travail Lycée CARCOUET 2019-2020 - servant de base à  l\'apprentissage PHP objet - jquery - Ajax  - Bootstrap</p>
-				<p id="copyright">
-				Mise en page PFR &copy; 2019
-				<a href="http://www.btssio-carcouet.fr/">BTS SIO Lycée CARCOUET NANTES</a>
-				</p>
-            </footer>
+				<!-- Footer -->
+					<footer>
+						<p>Site de travail Lycée CARCOUET 2019-2020 - servant de base à  l\'apprentissage PHP objet - jquery - Ajax  - Bootstrap</p>
+						<p id="copyright">
+						Mise en page PFR &copy; 2019
+						<a href="http://www.btssio-carcouet.fr/">BTS SIO Lycée CARCOUET NANTES</a>
+						</p>
+					</footer>
 		';
 	}
 
@@ -229,13 +229,15 @@ class page_base {
 					<?php $this->affiche_style(); ?>
 				</head>
 				<body>
-				<div class="global">
+					<div class="global">
 
-						<?php $this->affiche_entete(); ?>
-						<?php $this->affiche_entete_menu(); ?>
-						<?php $this->affiche_menu(); ?>
-						<?php $this->affiche_menu_connexion(); ?>
-						<?php $this->affiche_footer_menu(); ?>
+						<header class="header-area">
+							<?php $this->affiche_entete(); ?>
+							<?php $this->affiche_entete_menu(); ?>
+							<?php $this->affiche_menu(); ?>
+							<?php $this->affiche_menu_connexion(); ?>
+							<?php $this->affiche_footer_menu(); ?>
+						</header>
 
   						<div class="d-flex flex-wrap align-content-around " style="clear:both;">
     						<div class="p-2 left" style="float:left;">
@@ -248,8 +250,9 @@ class page_base {
 						<div style="clear:both;">
 							<?php $this->affiche_footer(); ?>
 						</div>
-					</div>
+					</div>					
 				</body>
+				
 			</html>
 		<?php
 	}
